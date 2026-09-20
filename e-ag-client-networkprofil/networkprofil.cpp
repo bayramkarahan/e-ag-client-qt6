@@ -8,34 +8,36 @@
 
 NewtworkProfil::NewtworkProfil()
 {
-    networkProfilSaveStatus=false;
-    localDir="/usr/share/e-ag/";
-    localDir1="/tmp/";
-   networkProfilWather.addPath(localDir+"e-ag.json");
+    networkProfilSaveStatus = false;
+
+    localDir = "/usr/share/e-ag/";
+    localDir1 = "/tmp/";
+
+    networkProfilWather.addPath(localDir + "e-ag.json");
 
     udpServerGet = new QUdpSocket(this);
-    ////udpServerGet->bind(uport.toInt()+uport.toInt(), QUdpSocket::ShareAddress);
-    udpServerGet->bind(QHostAddress::AnyIPv4, 45454,
-                       QUdpSocket::ShareAddress | QUdpSocket::ReuseAddressHint);
-     connect(udpServerGet, &QUdpSocket::readyRead,this, &NewtworkProfil::udpServerGetSlot);
 
-    connect(&networkProfilWather, &QFileSystemWatcher::fileChanged, this,
-            [this](){
-                if(!networkProfilSaveStatus)
-                {
-                qDebug()<<"Ayarlar güncellendi(Farklı Uygulamalardan)...";
-                    QTimer::singleShot(5000, this, [this](){
-                    multicastJoin();
-                    networkProfilLoad();  // burada tekrar addPath() çağırılacak
-                    system("systemctl restart e-ag-client-console.service");
-                    });
+    udpServerGet->bind(QHostAddress::AnyIPv4,
+                       45454,
+                       QUdpSocket::ShareAddress |
+                       QUdpSocket::ReuseAddressHint);
 
-                }
-            });
+    connect(udpServerGet,
+            &QUdpSocket::readyRead,
+            this,
+            &NewtworkProfil::udpServerGetSlot);
 
 
-    connect(networkConfigManager, &QTimer::timeout,
-            this, [this]()
+    // --------------------------------------------------
+    // Network değişikliğini periyodik kontrol etmek için
+    // --------------------------------------------------
+
+    networkConfigManager = new QTimer(this);
+
+    connect(networkConfigManager,
+            &QTimer::timeout,
+            this,
+            [this]()
     {
         static QString lastNetworkState;
         QString currentNetworkState;
@@ -72,9 +74,12 @@ NewtworkProfil::NewtworkProfil()
 
             QTimer::singleShot(5000, this, [this]()
             {
-                qDebug() << "Network configuration changed! Ayarlar yükleniyor...";
+                qDebug() << "Network configuration changed! "
+                            "Ayarlar yükleniyor...";
+
                 multicastJoin();
                 networkProfilLoad();
+
                 system("systemctl restart e-ag-client-console.service");
             });
         }
@@ -82,36 +87,56 @@ NewtworkProfil::NewtworkProfil()
 
     networkConfigManager->start(3000);
 
-  /*  networkConfigManager = new QNetworkConfigurationManager(this);
 
-    connect(networkConfigManager, &QNetworkConfigurationManager::configurationChanged,
-            this, [this](const QNetworkConfiguration &config){
-                Q_UNUSED(config);
+    // --------------------------------------------------
+    // e-ag.json değişikliği
+    // --------------------------------------------------
 
-                qDebug() << "Network configuration changed!";
-                QTimer::singleShot(5000, this, [this](){
-                    qDebug() << "Network configuration changed! Ayarlar yükleniyor...";
-                    multicastJoin();
-                    networkProfilLoad();
-                    system("systemctl restart e-ag-client-console.service");
-                });
+    connect(&networkProfilWather,
+            &QFileSystemWatcher::fileChanged,
+            this,
+            [this]()
+    {
+        if (!networkProfilSaveStatus)
+        {
+            qDebug() << "Ayarlar güncellendi "
+                        "(Farklı Uygulamalardan)...";
 
-            });*/
-    /***************************-********************************************/
+            QTimer::singleShot(5000, this, [this]()
+            {
+                multicastJoin();
+                networkProfilLoad();
+                system("systemctl restart e-ag-client-console.service");
+            });
+        }
+    });
+
+
+    // --------------------------------------------------
+    // IP değişikliği
+    // --------------------------------------------------
+
     IPWatcher *watcher = new IPWatcher(this);
 
-    connect(watcher, &IPWatcher::ipChanged, this, [=](QStringList ips){
+    connect(watcher,
+            &IPWatcher::ipChanged,
+            this,
+            [this](const QStringList &ips)
+    {
         qDebug() << "Yeni IP’ler:" << ips;
-        multicastJoin();       // IP değişince multicast’i tekrar join et
-        networkProfilLoad();   // IP değişince network profil yükle
+
+        multicastJoin();
+        networkProfilLoad();
+
         system("systemctl restart e-ag-client-console.service");
     });
-    /************************************************************************/
+
+
+    // --------------------------------------------------
 
     networkProfilLoad();
     multicastJoin();
 }
-
 void NewtworkProfil::multicastJoin()
 {
     qDebug() << "multicastJoin";

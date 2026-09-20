@@ -10,4 +10,6 @@ SUBDIRS += \
     serverscreen\
     clientscreen\
     webblock\
-    streamplayer
+    streamplayer\
+    mediastreamer \
+    dds

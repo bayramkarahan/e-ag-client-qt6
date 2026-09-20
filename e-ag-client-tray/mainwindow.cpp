@@ -402,13 +402,13 @@ void MainWindow::tcpMessageControlSlot(QJsonObject json)
                 QProcess::execute("systemctl", {"--user", "start", "pulseaudio.service"});
             }
         }
-        else if(submessagetype=="videoyayinbaslat")
+        else if(submessagetype=="videofullsizestart")
         {
-            qDebug()<<"komut:"<<submessagetype<<komut;
+            //qDebug()<<"komut:"<<submessagetype<<komut;
 
 
         }
-        else if(submessagetype=="videoyayindurdur")
+        else if(submessagetype=="videofullsizestop")
         {
 
         }
