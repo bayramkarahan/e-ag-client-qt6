@@ -19,6 +19,17 @@ systemctl stop e-ag-x11vnclogin.service || true
 systemctl disable webblock.service || true
 systemctl stop webblock.service || true
 
+# dds
+systemctl disable dds-service.service || true
+systemctl stop dds-service.service || true
+
+
+systemctl disable dds-debinstaller@.service || true
+systemctl stop dds-debinstaller@.service || true
+
+systemctl disable dds-scriptexec@.service || true
+systemctl stop dds-scriptexec@.service || true
+
 systemctl daemon-reload  || true
 rm -rf /usr/share/e-ag
 exit 0
