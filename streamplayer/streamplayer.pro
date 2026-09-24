@@ -18,6 +18,7 @@ PKGCONFIG += libva
 PKGCONFIG += libdrm
 
 TEMPLATE = app
+TARGET=streamplayer
 
 SOURCES += \
     common/camerainforeader.cpp \
@@ -114,3 +115,6 @@ LIBS += \
     INCLUDEPATH += \
         /usr/include/pipewire-0.3 \
         /usr/include/spa-0.2
+
+target.path = /usr/bin
+INSTALLS += target

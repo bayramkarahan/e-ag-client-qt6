@@ -1,1 +1,3 @@
 sudo apt install libqt5keychain1-dev
+sudo apt install libxtst-dev 
+sudo apt install libpcap-dev 
