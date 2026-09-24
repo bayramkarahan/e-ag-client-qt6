@@ -22,7 +22,7 @@ struct StreamSettings
     // Preview
     //----------------------------------------------------
 
-    PreviewMode previewMode = PreviewMode::Local;
+    PreviewMode previewMode = PreviewMode::Normal;
 
     //----------------------------------------------------
     // Network
@@ -37,7 +37,7 @@ struct StreamSettings
     //----------------------------------------------------
     // Codec
     //----------------------------------------------------
-
+    QString serverAddress = "127.0.0.1";
     int videoBitrate = 4000;
 
     int audioBitrate = 64000;

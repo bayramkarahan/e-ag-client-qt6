@@ -2,7 +2,7 @@
 
 #include <QObject>
 #include <QHostAddress>
-
+#include<QScreen>
 #include "../common/VideoCaptureSettings.h"
 #include "../common/StreamSettings.h"
 #include "../player/rtspsource.h"

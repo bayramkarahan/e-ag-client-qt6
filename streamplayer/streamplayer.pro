@@ -16,9 +16,9 @@ PKGCONFIG += x264
 PKGCONFIG += opus
 PKGCONFIG += libva
 PKGCONFIG += libdrm
+TARGET=streamplayer
 
 TEMPLATE = app
-TARGET=streamplayer
 
 SOURCES += \
     common/camerainforeader.cpp \

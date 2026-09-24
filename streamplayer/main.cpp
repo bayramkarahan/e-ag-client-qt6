@@ -56,7 +56,7 @@ int main(int argc, char *argv[])
     ReceiverStream *rs= new ReceiverStream;
     if (!rs->open(settings)) return -1;
 
-    rs->start("192.168.1.103");
+    rs->start(settings.serverAddress);
     //rs->m_openglrenderer->show();
 
     return app.exec();

@@ -193,11 +193,43 @@ bool ReceiverStream::start(QString hostIp)
             //m_openglrenderer =new VideoRenderer;
         }
 
-       if (m_settings.previewMode != PreviewMode::None)
-        {
-            m_openglrenderer->resize(m_settings.video.width, m_settings.video.height);
-            m_openglrenderer->show();
-        }
+        if (m_settings.previewMode != PreviewMode::None)
+         {
+            if (m_settings.previewMode == PreviewMode::Normal)
+            {
+                m_openglrenderer->resize(m_settings.video.width,m_settings.video.height);
+                m_openglrenderer->show();
+            }
+            else if (m_settings.previewMode == PreviewMode::FullScreen)
+            {
+                const QList<QScreen *> screens = QGuiApplication::screens();
+
+                if (m_settings.video.screenIndex < 0 ||
+                    m_settings.video.screenIndex >= screens.size())
+                {
+                    qWarning() << "Invalid screen index:"
+                               << m_settings.video.screenIndex;
+
+                    return 0;
+                }
+
+                QScreen *screen =screens.at(m_settings.video.screenIndex);
+                QRect geometry = screen->geometry();
+                qDebug() << "Fullscreen screen:"<< m_settings.video.screenIndex<< geometry;
+                m_openglrenderer->setWindowFlags(
+                    Qt::FramelessWindowHint |
+                    Qt::WindowStaysOnTopHint |
+                    Qt::X11BypassWindowManagerHint
+                );
+
+                m_openglrenderer->setGeometry(geometry);
+
+                m_openglrenderer->show();
+                m_openglrenderer->raise();
+            }
+
+         }
+
     }
 
     if(m_settings.captureMode==CaptureMode::Video)

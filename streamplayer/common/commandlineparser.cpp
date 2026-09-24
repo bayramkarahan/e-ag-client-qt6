@@ -45,13 +45,13 @@ bool CommandLineParser::parse(QApplication &app,
 
     parser.addOption({
         "capture",
-        "audio | video | av",
+        "audio | video | audiovideo",
         "capture"
     });
 
     parser.addOption({
         "preview",
-        "none | local | remote",
+        "none | normal | fullscreen",
         "preview"
     });
 
@@ -60,6 +60,12 @@ bool CommandLineParser::parse(QApplication &app,
         "Multicast address",
         "address"
     });
+
+    parser.addOption({
+           "serveraddress",
+           "local | server",
+           "address"
+       });
 
     parser.addOption({
         "video-port",
@@ -95,7 +101,7 @@ bool CommandLineParser::parse(QApplication &app,
         settings.captureMode = CaptureMode::Audio;
     else if (capture == "video")
         settings.captureMode = CaptureMode::Video;
-    else if (capture == "av" || capture.isEmpty())
+    else if (capture == "audiovideo" || capture.isEmpty())
         settings.captureMode = CaptureMode::AudioVideo;
 
     //----------------------------------------------------
@@ -106,10 +112,10 @@ bool CommandLineParser::parse(QApplication &app,
 
     if (preview == "none")
         settings.previewMode = PreviewMode::None;
-    else if (preview == "remote")
-        settings.previewMode = PreviewMode::Remote;
-    else if (preview == "local" || preview.isEmpty())
-        settings.previewMode = PreviewMode::Local;
+    else if (preview == "fullscreen")
+        settings.previewMode = PreviewMode::FullScreen;
+    else if (preview == "normal" || preview.isEmpty())
+        settings.previewMode = PreviewMode::Normal;
 
     //----------------------------------------------------
     // Source
@@ -132,6 +138,31 @@ bool CommandLineParser::parse(QApplication &app,
         settings.video.source = CaptureSource::ScreenFFmpeg;
         settings.video.screenIndex =
                 parser.value("screen").toInt();
+    }
+    //----------------------------------------------------
+    // Server Address
+    //----------------------------------------------------
+
+    QString serverAddress = parser.value("serveraddress").trimmed();
+
+    if (serverAddress.isEmpty() ||
+        serverAddress.toLower() == "local")
+    {
+        settings.serverAddress ="127.0.0.1";
+    }
+    else
+    {
+        QHostAddress address(serverAddress);
+
+        if (address.isNull())
+        {
+            qCritical() << "Invalid server address:"
+                        << serverAddress;
+
+            return false;
+        }
+
+        settings.serverAddress = serverAddress;
     }
 
     //----------------------------------------------------

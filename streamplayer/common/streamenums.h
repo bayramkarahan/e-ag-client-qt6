@@ -16,9 +16,8 @@ enum class StreamMode
 enum class PreviewMode
 {
     None,
-    Local,
-    Remote,
-    Both
+    Normal,
+    FullScreen
 };
 
 enum class CaptureMode

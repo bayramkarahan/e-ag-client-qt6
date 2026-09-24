@@ -22,10 +22,14 @@ Homepage: http://pardus.org.tr
 
 Package: e-ag-client
 Architecture: amd64
-Depends: libavcodec59 (>=7:5.0) | libavcodec61 (>=7:5.0) | libavcodec62 (>=7:5.0),
-    libavformat59 (>=7:5.0) | libavformat61 (>=7:5.0) | libavformat62 (>=7:5.0),
-    libavutil57 (>=7:5.0) | libavutil59 (>=7:5.0) | libavutil60 (>=7:5.0),
-    libswscale6 (>=7:5.0) | libswscale8 (>=7:5.0) | libswscale9 (>=7:5.0),
+Depends:  
+	${shlibs:Depends},
+    ${misc:Depends},
+    qt6-svg-plugins | qt6-base-plugins,
+    libavcodec59 | libavcodec61 | libavcodec62,
+	libavformat59 | libavformat61 | libavformat62,
+	libavutil57 | libavutil59 | libavutil60,
+	libswscale6 | libswscale8 | libswscale9,
     libqt6core6,
     libqt6gui6,
     libqt6network6,
