@@ -1,0 +1,17 @@
+#!/usr/bin/make -f
+# -*- makefile -*-
+
+export QT_SELECT=qt6
+
+%:
+	dh $@
+
+override_dh_auto_configure:
+	/usr/lib/qt6/bin/qmake6 -makefile
+
+override_dh_auto_build:
+	dh_auto_build --buildsystem=qmake
+
+override_dh_auto_install:
+	dh_auto_install
+
