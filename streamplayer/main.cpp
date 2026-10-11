@@ -2,7 +2,8 @@
 #include <QDebug>
 #include "common/StreamSettings.h"
 #include "common/commandlineparser.h"
-#include "stream/receiverstream.h"
+#include "stream/rstpreceiverstream.h"
+#include "stream/rtpreceiverstream.h"
 
 #include "renderer/openglvaapizerocopyrenderer.h"
 #include "renderer/openglvideorenderer.h"
@@ -23,8 +24,7 @@ int main(int argc, char *argv[])
 
     StreamSettings settings;
     settings.mode=StreamMode::Receiver;
-    //settings.video.source = CaptureSource::Camera;
-    //settings.video.fileName="selcuk.mp4";
+    settings.receivermode=ReceiverMode::Multicast;
     if (!CommandLineParser::parse(app, settings))
         return -1;
 
@@ -32,18 +32,18 @@ int main(int argc, char *argv[])
     //return 0;
 
     //settings.video.device="/dev/video2";
-    //settings.captureMode = CaptureMode::AudioVideo;
+    //settings.audio.source=AudioSource::None;
+    //settings.video.source=VideoSource::ScreenFFmpeg;
+
     //settings.previewMode = PreviewMode::Remote;
     //settings.videoAddress=QHostAddress("239.10.10.10");
-    //settings.videoPort=5004;
+    settings.videoPort=5004;
 
-
-
-    settings.audioSampleRate=48000;
-    settings.audioChannels=2;
-    settings.audioFrameSample=960;
-    settings.audioBitrate=20000;
-    settings.videoBitrate=4000;
+    settings.audio.sampleRate=48000;
+    settings.audio.channels=2;
+    settings.audio.frameSample=960;
+    settings.audio.bitrate=20000;
+    settings.video.bitrate=4000;
 
     settings.audioAddress=settings.videoAddress;
     settings.audioPort=settings.videoPort+2;
@@ -53,11 +53,26 @@ int main(int argc, char *argv[])
     //settings.video.height = 90;
     //settings.video.timeMode = TimeMode::MasterClock;
 
-    ReceiverStream *rs= new ReceiverStream;
-    if (!rs->open(settings)) return -1;
 
-    rs->start(settings.serverAddress);
-    //rs->m_openglrenderer->show();
+ /*   rstp->start(settings.serverAddress);
+*/
+
+    if(settings.receivermode==ReceiverMode::Unicast)
+    {
+        qDebug()<<"ReceiverMode::Unicast";
+        RstpReceiverStream *rstp= new RstpReceiverStream;
+        if (!rstp->open(settings)) return -1;
+        rstp->start(settings.serverAddress);
+    }
+    if(settings.receivermode==ReceiverMode::Multicast)
+    {
+        qDebug()<<"ReceiverMode::Multicast";
+        RtpReceiverStream *rtp= new RtpReceiverStream;
+        if (!rtp->open(settings)) return -1;
+
+        rtp->start();
+    }
+
 
     return app.exec();
 }

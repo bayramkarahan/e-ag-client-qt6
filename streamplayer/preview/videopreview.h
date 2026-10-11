@@ -5,7 +5,7 @@
 
 #include "../converter/videoconverter.h"
 #include "../renderer/videorenderer.h"
-#include "sync/mediaclock.h"
+#include "rtp-sync/mediaclock.h"
 class VideoPreview : public QObject
 {
     Q_OBJECT

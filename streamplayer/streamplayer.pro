@@ -6,6 +6,8 @@ QT += gui widgets core network multimedia openglwidgets
 # sudo apt install intel-media-va-driver
 # sudo apt install libva-dev
 # sudo apt install libdrm-dev
+
+
 CONFIG += c++17 console
 CONFIG -= app_bundle
 CONFIG += link_pkgconfig
@@ -16,9 +18,9 @@ PKGCONFIG += x264
 PKGCONFIG += opus
 PKGCONFIG += libva
 PKGCONFIG += libdrm
-TARGET=streamplayer
 
 TEMPLATE = app
+TARGET=streamplayer
 
 SOURCES += \
     common/camerainforeader.cpp \
@@ -33,18 +35,28 @@ SOURCES += \
     decoder/vaapizerocopydecoder.cpp \
     decoder/videodecoderfactory.cpp \
     main.cpp \
+    network/rtpjitterbuffer.cpp \
     player/audioplayback.cpp \
     player/audioprocessor.cpp \
-    player/rtspsource.cpp \
-    player/rtspworker.cpp \
+    player/rtpaudioplayback.cpp \
+    player/rtpaudioprocessor.cpp \
+    receiver/rtpreceiver.cpp \
+    receiver/rtpsource.cpp \
+    receiver/rtpworker.cpp \
+    receiver/rtspsource.cpp \
+    receiver/rtspworker.cpp \
     renderer/openglvaapizerocopyrenderer.cpp \
     renderer/openglvideorenderer.cpp \
     renderer/videorenderer.cpp \
-    stream/receiverstream.cpp \
-    sync/audioscheduler.cpp \
-    sync/mastertime.cpp \
-    sync/mediaclock.cpp \
-    sync/videoscheduler.cpp \
+    session/sessiondescription.cpp \
+    stream/rstpreceiverstream.cpp \
+    stream/rtpreceiverstream.cpp \
+    rstp-sync/audioscheduler.cpp \
+    rstp-sync/mediaclock.cpp \
+    rtp-sync/rtpaudioscheduler.cpp \
+    rtp-sync/rtpmediaclock.cpp \
+    rtp-sync/rtpvideoscheduler.cpp \
+    rstp-sync/videoscheduler.cpp \
     udpmesageservice/controlchannel.cpp \
     udpmesageservice/controlclient.cpp \
     udpmesageservice/controlmessage.cpp \
@@ -60,7 +72,6 @@ HEADERS += \
     common/MediaPacket.h \
     common/StreamSettings.h \
     common/VideoBuffer.h \
-    common/VideoCaptureSettings.h \
     common/camerainforeader.h \
     common/commandlineparser.h \
     common/hardwareframe.h \
@@ -76,20 +87,30 @@ HEADERS += \
     decoder/vaapivideodecoder.h \
     decoder/vaapizerocopydecoder.h \
     decoder/videodecoderfactory.h \
+    network/rtpjitterbuffer.h \
     network/rtppacket.h \
     player/audioplayback.h \
     player/audioprocessor.h \
-    player/rtspsource.h \
-    player/rtspworker.h \
+    player/rtpaudioplayback.h \
+    player/rtpaudioprocessor.h \
+    receiver/rtpreceiver.h \
+    receiver/rtpsource.h \
+    receiver/rtpworker.h \
+    receiver/rtspsource.h \
+    receiver/rtspworker.h \
     renderer/AbstractVideoRenderer.h \
     renderer/openglvaapizerocopyrenderer.h \
     renderer/openglvideorenderer.h \
     renderer/videorenderer.h \
-    stream/receiverstream.h \
-    sync/audioscheduler.h \
-    sync/mastertime.h \
-    sync/mediaclock.h \
-    sync/videoscheduler.h \
+    session/sessiondescription.h \
+    stream/rstpreceiverstream.h \
+    stream/rtpreceiverstream.h \
+    rstp-sync/audioscheduler.h \
+    rstp-sync/mediaclock.h \
+    rtp-sync/rtpaudioscheduler.h \
+    rtp-sync/rtpmediaclock.h \
+    rtp-sync/rtpvideoscheduler.h \
+    rstp-sync/videoscheduler.h \
     udpmesageservice/controlchannel.h \
     udpmesageservice/controlclient.h \
     udpmesageservice/controlmessage.h \

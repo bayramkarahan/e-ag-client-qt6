@@ -6,7 +6,7 @@
 #include <QDebug>
 
 AbstractVideoDecoder *VideoDecoderFactory::create(QObject *parent)
-{/*
+{
     if (VaapiVideoDecoder::isSupported())
     {
         qDebug() << "Using VAAPI decoder";
@@ -15,6 +15,6 @@ AbstractVideoDecoder *VideoDecoderFactory::create(QObject *parent)
     }
 
     qDebug() << "Using CPU decoder";
-*/
+
     return new CpuVideoDecoder(parent);
 }
