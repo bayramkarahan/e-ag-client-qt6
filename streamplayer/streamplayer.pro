@@ -6,8 +6,6 @@ QT += gui widgets core network multimedia openglwidgets
 # sudo apt install intel-media-va-driver
 # sudo apt install libva-dev
 # sudo apt install libdrm-dev
-
-
 CONFIG += c++17 console
 CONFIG -= app_bundle
 CONFIG += link_pkgconfig

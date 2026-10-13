@@ -30,7 +30,7 @@ class RstpReceiverStream : public QObject
 
 public:
     explicit RstpReceiverStream(QObject *parent = nullptr);
-
+    ~RstpReceiverStream();
     bool open(const StreamSettings &settings);
     bool start(QString hostIp);
     void stop();
