@@ -1,0 +1,54 @@
+#!/bin/sh
+
+mkdir -p /usr/share/e-ag
+#chmod 777 /usr/share/e-ag
+systemctl daemon-reload || true
+systemctl enable e-ag-client-networkprofil.service || true
+systemctl start e-ag-client-networkprofil.service || true
+
+systemctl enable e-ag-client-console.service || true
+systemctl start e-ag-client-console.service || true
+
+systemctl enable e-ag-x11vnclogin.service || true
+systemctl start e-ag-x11vnclogin.service || true
+
+systemctl enable e-ag-x11vncdesktop.service || true
+systemctl start e-ag-x11vncdesktop.service || true
+
+systemctl enable webblock.service || true
+systemctl start webblock.service || true
+
+e-ag-client-tray&
+
+
+systemctl enable dds-service.service || true
+systemctl start dds-service.service || true
+
+systemctl enable dds-debinstaller@.service || true
+systemctl start dds-debinstaller@.service || true
+
+systemctl enable dds-scriptexec@.service || true
+systemctl start dds-scriptexec@.service || true
+
+
+#xrdp
+systemctl stop xrdp || true
+rm -rf /var/log/xrdp || true
+
+mkdir -p /var/log/xrdp || true
+
+touch /var/log/xrdp/xrdp.log || true
+touch /var/log/xrdp/sesman.log || true
+touch /var/log/xrdp.log || true
+touch /var/log/xrdp-sesman.log || true
+
+chown -R xrdp:xrdp /var/log/xrdp || true
+chown xrdp:xrdp /var/log/xrdp.log /var/log/xrdp-sesman.log || true
+
+chmod 755 /var/log/xrdp || true
+chmod 644 /var/log/xrdp/*.log || true
+chmod 644 /var/log/xrdp.log /var/log/xrdp-sesman.log || true
+
+systemctl restart xrdp || true
+
+exit 0
