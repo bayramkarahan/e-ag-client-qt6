@@ -1,5 +1,5 @@
 QT += gui widgets core network multimedia dbus
-# sudo apt install libpulse-dev
+
 CONFIG += c++17 console
 CONFIG -= app_bundle
 CONFIG += link_pkgconfig
@@ -67,6 +67,7 @@ HEADERS += \
     audiocapture/microphoneaudiocapture.h \
     audiocapture/audioframe.h \
     audiocapture/systemaudiocapture.h \
+    videocapture/desktopsession.h \
     videocapture/ffmpegpipewirescreencapture.h \
     videocapture/ffmpegscreencapture.h \
     videocapture/mediafilecapture.h \
