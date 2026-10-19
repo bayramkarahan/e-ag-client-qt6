@@ -6,6 +6,10 @@
 #include <QtCore/QCoreApplication>
 #include<Database.h>
 #include<userprivilegehelper.h>
+#include <QProcess>
+#include <QRegularExpression>
+#include <QSet>
+#include <algorithm>
 Client::Client()
 {
     localDir="/usr/share/e-ag/";
@@ -605,7 +609,7 @@ void Client::tcpMesajSendTimerSlot(bool commandDetailStatus,QString command,QStr
     bool xrdpState = (getIpPortStatus("systemctl status xrdp.service | grep 'running' | wc -l", 0) == "open");
 
     QString vncports = findX11vncPort("netstat -tulnp");
-
+    qDebug()<<"vncports"<<vncports;
     QJsonObject json;
 
     for (auto key : trayEnv.keys())
@@ -995,39 +999,98 @@ bool Client::uygulamaCalisiyorMu(const QString& uygulamaAdi) {
         return false;
     }
 }
-QString Client::findX11vncPort(QString kmt) {
-    //qDebug()<<"x11vnc portu test ediliyor....."<<kmt;
-    QString ports="";
-    QProcess process;
-    process.start(kmt);
-    process.waitForFinished();
-    QString output = process.readAllStandardOutput();
-    //qDebug()<<"findX11vncPort test sonucu:"<<output.split("\n");
 
-    QStringList lines = output.split("\n");
-    for (const QString& line : lines) {
+QString Client::findX11vncPort(QString kmt)
+{
+   QProcess process;
 
+   // Komutu program ve argümanlarına ayır
+   QStringList args = kmt.split(
+       QRegularExpression("\\s+"),
+       Qt::SkipEmptyParts
+   );
 
-        if (line.contains("x11vnc")) {
-            if (line.contains("tcp6")) {
-                QStringList parts = line.split(" ");
-                 //qDebug()<<"satir"<<line<<parts;
-                for (const QString& part : parts) {
-                    if (part.contains(":59")) {
-                        //qDebug()<<"satir"<<part.split(":")[3];
-                        //return part.split(":")[1];
-                        ports=ports+part.split(":")[3]+"-";
+   if (args.isEmpty())
+       return {};
 
-                    }
-                }
-            }
-        }
-    }
-    //qDebug()<<"findX11vncPort test sonucu00:"<<ports;
+   const QString program = args.takeFirst();
 
+   // Komutu çalıştır
+   process.start(program, args);
 
-    return ports;
+   if (!process.waitForStarted(3000)) {
+       qDebug() << "Komut başlatılamadı:"
+                << process.errorString();
+       return {};
+   }
+
+   if (!process.waitForFinished(5000)) {
+       process.kill();
+       process.waitForFinished();
+       qDebug() << "Komut zaman aşımına uğradı.";
+       return {};
+   }
+
+   // Komut çıktısını oku
+   const QString output = QString::fromLocal8Bit(
+       process.readAllStandardOutput()
+   );
+
+   QSet<QString> ports;
+
+   // Satırları incele
+   const QStringList lines = output.split('\n');
+
+   for (const QString &line : lines) {
+
+       const QStringList parts = line.split(
+           QRegularExpression("\\s+"),
+           Qt::SkipEmptyParts
+       );
+
+       // Proto, Recv-Q, Send-Q, Local Address,
+       // Foreign Address, State sütunları olmalı
+       if (parts.size() < 6)
+           continue;
+
+       // Yalnızca TCP bağlantıları
+       if (parts[0] != "tcp" && parts[0] != "tcp6")
+           continue;
+
+       // Yalnızca dinlemedeki portlar
+       if (parts[5] != "LISTEN")
+           continue;
+
+       // Yerel adres: ör. 0.0.0.0:5902 veya :::5900
+       const QString localAddress = parts[3];
+
+       // Port numarasını al
+       const QString port = localAddress.section(':', -1);
+
+       bool ok = false;
+       const int portNumber = port.toInt(&ok);
+
+       // 5900-5929 aralığındaki portları ekle
+       if (ok && portNumber >= 5900 && portNumber <= 5929)
+           ports.insert(port);
+   }
+   // Portları listeye aktar
+   QStringList result = ports.values();
+   // Portları sırala
+   std::sort(result.begin(), result.end(),
+             [](const QString &a, const QString &b) {
+                 return a.toInt() < b.toInt();
+             });
+
+   const QString resultString = result.isEmpty()
+                                    ? QString()
+                                    : result.join('-') + '-';
+
+   ///qDebug() << "Bulunan VNC portları:" << resultString;
+
+   return resultString;
 }
+
 QString  Client::getSeatId()
 {
     QString tempseatId;

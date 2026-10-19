@@ -9,7 +9,9 @@ class VideoDecoderFactory
 {
 public:
 
-    static AbstractVideoDecoder *create(QObject *parent = nullptr);
+    static AbstractVideoDecoder *create(
+        QObject *parent,
+        const StreamSettings &settings);
 };
 
 #endif
