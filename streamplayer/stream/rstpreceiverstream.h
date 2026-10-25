@@ -42,13 +42,12 @@ public:
     void onControlMessage(
         const ControlMessage &message);
 private:
-AbstractVideoRenderer*     m_openglrenderer = nullptr;
+    //AbstractVideoRenderer*     m_openglrenderer = nullptr;
     StreamSettings m_settings;
 
     MasterTime*        m_masterTime = nullptr;
     MediaClock*        m_clock = nullptr;
 
-    VideoRenderer*     m_renderer = nullptr;
     VideoPreview*      m_preview = nullptr;
     //OpenGLVaapiZeroCopyRenderer*     m_openglvaapizerorenderer = nullptr;
 

@@ -4,8 +4,8 @@
 #include <QObject>
 #include <opus/opus.h>
 
-#include "network/rtppacket.h"
-#include "audio/audioframe.h"
+#include "../network/rtppacket.h"
+#include "../audio/audioframe.h"
 
 class AudioOpusDecoder : public QObject
 {

@@ -4,8 +4,8 @@
 #include <QObject>
 #include <QQueue>
 #include<QTimer>
-#include "common/MediaFrame.h"
-#include "rstp-sync/mediaclock.h"
+#include "../common/MediaFrame.h"
+#include "../rstp-sync/mediaclock.h"
 #include "../common/StreamSettings.h"
 #include<QThread>
 #include <libavutil/avutil.h>

@@ -1,4 +1,4 @@
-#include "openglvaapizerocopyrenderer.h"
+#include "openglvaapizerocopypreview.h"
 
 #include <QDebug>
 #include <QMutexLocker>
@@ -8,14 +8,14 @@ extern "C"
 #include <libavutil/frame.h>
 }
 
-OpenGLVaapiZeroCopyRenderer::
-OpenGLVaapiZeroCopyRenderer(QWidget *parent)
-    : AbstractVideoRenderer(parent)
+OpenGLVaapiZeroCopyPreview::
+OpenGLVaapiZeroCopyPreview(QWidget *parent)
+    : AbstractVideoPreview(parent)
 {
 
 }
 
-void OpenGLVaapiZeroCopyRenderer::initializeGL()
+void OpenGLVaapiZeroCopyPreview::initializeGL()
 {
     initializeOpenGLFunctions();
 
@@ -221,7 +221,7 @@ void OpenGLVaapiZeroCopyRenderer::setFrame(
  /*   update();
 }*/
 
-void OpenGLVaapiZeroCopyRenderer::onFrame(const MediaFrame &frame)
+void OpenGLVaapiZeroCopyPreview::onFrame(const MediaFrame &frame)
 {
  /*   qDebug()
         << "onFrame:"
@@ -246,7 +246,7 @@ void OpenGLVaapiZeroCopyRenderer::onFrame(const MediaFrame &frame)
 
     update();
 }
-void OpenGLVaapiZeroCopyRenderer::paintGL()
+void OpenGLVaapiZeroCopyPreview::paintGL()
 {
 
 
@@ -352,7 +352,7 @@ void OpenGLVaapiZeroCopyRenderer::paintGL()
     m_shader->release();
 }
 
-bool OpenGLVaapiZeroCopyRenderer::importSurface(
+bool OpenGLVaapiZeroCopyPreview::importSurface(
     VaapiHardwareFrame *hw)
 {
     if (!hw)

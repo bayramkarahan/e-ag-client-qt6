@@ -4,8 +4,8 @@
 #include <QObject>
 #include <QQueue>
 #include<QTimer>
-#include "common/MediaFrame.h"
-#include "rtp-sync/rtpmediaclock.h"
+#include "../common/MediaFrame.h"
+#include "../rtp-sync/rtpmediaclock.h"
 #include "../common/StreamSettings.h"
 #include<QThread>
 class RtpVideoScheduler : public QObject

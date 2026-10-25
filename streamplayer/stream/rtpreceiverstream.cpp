@@ -7,10 +7,10 @@
 #include "../decoder/AbstractVideoDecoder.h"
 #include "../decoder/videodecoderfactory.h"
 #include "../player/rtpaudioplayback.h"
-#include "../renderer/openglvaapizerocopyrenderer.h"
-#include "../renderer/openglvideorenderer.h"
-#include "../renderer/videorenderer.h"
-#include "../renderer/AbstractVideoRenderer.h"
+#include "../preview/openglvaapizerocopypreview.h"
+#include "../preview/openglvideopreview.h"
+#include "../preview/videopreview.h"
+#include "../preview/AbstractVideoPreview.h"
 #include "../rtp-sync/rtpmediaclock.h"
 #include "../rtp-sync/rtpvideoscheduler.h"
 #include "../rtp-sync/rtpaudioscheduler.h"
@@ -112,11 +112,10 @@ bool RtpReceiverStream::startVideo()
     }
     m_videoDecoder->setSettings(m_settings);
 
-
     // --------------------------------------------------
     // RENDERER
     // --------------------------------------------------
-
+/*
     if (m_videoDecoder->type() ==
         AbstractVideoDecoder::Type::VAAPI)
     {
@@ -127,21 +126,22 @@ bool RtpReceiverStream::startVideo()
     {
         qDebug() << "Renderer: CPU";
         m_openglrenderer = new OpenGLVideoRenderer;
-    }
-
+    }*/
+    m_preview = new VideoPreview;
+    m_preview->setSettings(m_settings);
     // --------------------------------------------------
     // PREVIEW
     // --------------------------------------------------
 
-    if (m_settings.previewMode == PreviewMode::Normal)
+    if (m_settings.previewMode == PreviewMode::NormalPreview)
     {
-        m_openglrenderer->resize(
+        m_preview->resize(
             m_settings.video.width,
             m_settings.video.height);
 
-        m_openglrenderer->show();
+        m_preview->show();
     }
-    else if (m_settings.previewMode == PreviewMode::FullScreen)
+    else if (m_settings.previewMode == PreviewMode::FullScreenPreview)
     {
         const QList<QScreen *> screens = QGuiApplication::screens();
 
@@ -162,14 +162,14 @@ bool RtpReceiverStream::startVideo()
                  << m_settings.video.screenIndex
                  << geometry;
 
-        m_openglrenderer->setWindowFlags(
+        m_preview->setWindowFlags(
             Qt::FramelessWindowHint |
             Qt::WindowStaysOnTopHint |
             Qt::X11BypassWindowManagerHint);
 
-        m_openglrenderer->setGeometry(geometry);
-        m_openglrenderer->show();
-        m_openglrenderer->raise();
+        m_preview->setGeometry(geometry);
+        m_preview->show();
+        m_preview->raise();
     }
 
     // --------------------------------------------------
@@ -205,8 +205,8 @@ bool RtpReceiverStream::startVideo()
 
     connect(m_videoScheduler,
             &RtpVideoScheduler::frameReady,
-            m_openglrenderer,
-            &AbstractVideoRenderer::onFrame,
+            m_preview,
+            &VideoPreview::onFrame,
             Qt::QueuedConnection);
 
     // --------------------------------------------------
@@ -248,12 +248,11 @@ bool RtpReceiverStream::startAudioVideo()
     }
     m_videoDecoder->setSettings(m_settings);
 
-
     // --------------------------------------------------
     // VIDEO RENDERER
     // --------------------------------------------------
 
-    if (m_videoDecoder->type() ==
+    /*if (m_videoDecoder->type() ==
         AbstractVideoDecoder::Type::VAAPI)
     {
         qDebug() << "Renderer: VAAPI";
@@ -263,21 +262,23 @@ bool RtpReceiverStream::startAudioVideo()
     {
         qDebug() << "Renderer: CPU";
         m_openglrenderer = new OpenGLVideoRenderer;
-    }
+    }*/
+    m_preview = new VideoPreview;
+    m_preview->setSettings(m_settings);
 
     // --------------------------------------------------
     // VIDEO PREVIEW
     // --------------------------------------------------
 
-    if (m_settings.previewMode == PreviewMode::Normal)
+    if (m_settings.previewMode == PreviewMode::NormalPreview)
     {
-        m_openglrenderer->resize(
+        m_preview->resize(
             m_settings.video.width,
             m_settings.video.height);
 
-        m_openglrenderer->show();
+        m_preview->show();
     }
-    else if (m_settings.previewMode == PreviewMode::FullScreen)
+    else if (m_settings.previewMode == PreviewMode::FullScreenPreview)
     {
         const QList<QScreen *> screens = QGuiApplication::screens();
 
@@ -294,14 +295,14 @@ bool RtpReceiverStream::startAudioVideo()
 
         const QRect geometry = screen->geometry();
 
-        m_openglrenderer->setWindowFlags(
+        m_preview->setWindowFlags(
             Qt::FramelessWindowHint |
             Qt::WindowStaysOnTopHint |
             Qt::X11BypassWindowManagerHint);
 
-        m_openglrenderer->setGeometry(geometry);
-        m_openglrenderer->show();
-        m_openglrenderer->raise();
+        m_preview->setGeometry(geometry);
+        m_preview->show();
+        m_preview->raise();
     }
 
     // --------------------------------------------------
@@ -337,8 +338,8 @@ bool RtpReceiverStream::startAudioVideo()
 
     connect(m_videoScheduler,
             &RtpVideoScheduler::frameReady,
-            m_openglrenderer,
-            &AbstractVideoRenderer::onFrame,
+            m_preview,
+            &VideoPreview::onFrame,
             Qt::QueuedConnection);
 
     // --------------------------------------------------
@@ -450,8 +451,6 @@ bool RtpReceiverStream::start()
 
     return false;
 }
-
-
 
 void RtpReceiverStream::tryStartPlayback()
 {

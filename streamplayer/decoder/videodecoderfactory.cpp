@@ -5,13 +5,12 @@
 #include "vaapizerocopydecoder.h"
 #include <QDebug>
 
-
 AbstractVideoDecoder *VideoDecoderFactory::create(
     QObject *parent,
     const StreamSettings &settings)
 {
     // Önce VAAPI decoder'ı dene.
-    auto *gpu = new VaapiZeroCopyDecoder(parent);
+  /*  auto *gpu = new VaapiZeroCopyDecoder(parent);
     gpu->setSettings(settings);
 
     if (gpu->start())
@@ -26,7 +25,9 @@ AbstractVideoDecoder *VideoDecoderFactory::create(
     gpu->stop();
     delete gpu;
 
-    // VAAPI başlatılamadıysa CPU decoder'ı başlat.
+    // VAAPI başlatılamadıysa CPU decoder'ı başlat.*/
+
+
     auto *cpu = new CpuVideoDecoder(parent);
     cpu->setSettings(settings);
 

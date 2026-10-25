@@ -39,14 +39,12 @@ public:
     bool startAudioVideo();
 
 private:
-    AbstractVideoRenderer*     m_openglrenderer = nullptr;
+    //AbstractVideoRenderer*     m_openglrenderer = nullptr;
         StreamSettings m_settings;
 
         RtpMasterTime*        m_masterTime = nullptr;
         RtpMediaClock*        m_clock = nullptr;
 
-
-            VideoRenderer*     m_renderer = nullptr;
             VideoPreview*      m_preview = nullptr;
             //OpenGLVaapiZeroCopyRenderer*     m_openglvaapizerorenderer = nullptr;
 

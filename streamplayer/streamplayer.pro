@@ -38,14 +38,14 @@ SOURCES += \
     player/audioprocessor.cpp \
     player/rtpaudioplayback.cpp \
     player/rtpaudioprocessor.cpp \
+    preview/openglvaapizerocopypreview.cpp \
+    preview/openglvideopreview.cpp \
+    preview/videopreview.cpp \
     receiver/rtpreceiver.cpp \
     receiver/rtpsource.cpp \
     receiver/rtpworker.cpp \
     receiver/rtspsource.cpp \
     receiver/rtspworker.cpp \
-    renderer/openglvaapizerocopyrenderer.cpp \
-    renderer/openglvideorenderer.cpp \
-    renderer/videorenderer.cpp \
     session/sessiondescription.cpp \
     stream/rstpreceiverstream.cpp \
     stream/rtpreceiverstream.cpp \
@@ -91,15 +91,15 @@ HEADERS += \
     player/audioprocessor.h \
     player/rtpaudioplayback.h \
     player/rtpaudioprocessor.h \
+    preview/AbstractVideoPreview.h \
+    preview/openglvaapizerocopypreview.h \
+    preview/openglvideopreview.h \
+    preview/videopreview.h \
     receiver/rtpreceiver.h \
     receiver/rtpsource.h \
     receiver/rtpworker.h \
     receiver/rtspsource.h \
     receiver/rtspworker.h \
-    renderer/AbstractVideoRenderer.h \
-    renderer/openglvaapizerocopyrenderer.h \
-    renderer/openglvideorenderer.h \
-    renderer/videorenderer.h \
     session/sessiondescription.h \
     stream/rstpreceiverstream.h \
     stream/rtpreceiverstream.h \

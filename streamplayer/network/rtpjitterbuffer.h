@@ -4,7 +4,7 @@
 #include <QObject>
 #include <QMap>
 
-#include "network/rtppacket.h"
+#include "../network/rtppacket.h"
 
 class RTPJitterBuffer : public QObject
 {

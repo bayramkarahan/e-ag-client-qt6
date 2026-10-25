@@ -8,8 +8,8 @@
 #include<QMediaDevices>
 #include<QAudioSink>
 #include<QDateTime>
-#include "audio/audioframe.h"
-#include "rstp-sync/mediaclock.h"
+#include "../audio/audioframe.h"
+#include "../rstp-sync/mediaclock.h"
 
 class AudioPlayback : public QObject
 {
