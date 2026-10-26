@@ -1,0 +1,60 @@
+e-ag-client (2.9.9.7) unstable; urgency=medium
+
+  * update  mediastreamer streamplayer waylandsupported cpurenderpreview
+
+ -- Bayram KARAHAN <bayramk@gmail.com>  Sun, 27 Dec 2026 14:31:08 +0300
+ 
+e-ag-client (2.9.9.6) unstable; urgency=medium
+
+  * update  mediastreamer streamplayer waylandsupported
+  
+ -- Bayram KARAHAN <bayramk@gmail.com>  Sun, 27 Dec 2020 14:31:08 +0300
+ 
+e-ag-client (2.9.9.3) unstable; urgency=medium
+
+  * update depends
+
+ -- Bayram KARAHAN <bayramk@gmail.com>  Sun, 27 Dec 2020 14:31:08 +0300
+ 
+e-ag-client (2.9.9.1) unstable; urgency=medium
+
+  * add dds dosya dağıtım sistemi
+
+ -- Bayram KARAHAN <bayramk@gmail.com>  Sun, 27 Dec 2020 14:31:08 +0300
+ 
+e-ag-client (2.9.9.0) unstable; urgency=medium
+
+  * add mediastreamer
+
+ -- Bayram KARAHAN <bayramk@gmail.com>  Sun, 27 Dec 2020 14:31:08 +0300
+ 
+e-ag-client (2.9.8) unstable; urgency=medium
+
+  * get file and by extension
+  
+e-ag-client (2.9.7) unstable; urgency=medium
+
+  * get file and delete
+  * select pc updated
+  * pc select updated
+  * keyring first user hide
+
+e-ag-client (2.9.6) unstable; urgency=medium
+
+  * get workfile
+  * file space replace del
+  * vncscle add
+  * rdpsclae add
+  * user login cookie add
+  * file transfer state update
+  * right menu add refresh
+  * webtab add user cooike
+  * ssh terminal x-terminal-emulator add 
+  * novnc x-www-browser  add
+  
+e-ag-client (2.9.4.0) unstable; urgency=medium
+
+
+  * Initial Release
+
+ -- Bayram KARAHAN <bayramk@gmail.com>  Sun, 27 Dec 2020 14:31:08 +0300

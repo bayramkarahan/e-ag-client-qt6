@@ -25,8 +25,8 @@ int main(int argc, char *argv[])
     StreamSettings settings;
     settings.mode=StreamMode::Receiver;
     //settings.receivermode=ReceiverMode::Multicast;
-    settings.receivermode=ReceiverMode::Unicast;
-    settings.serverAddress="192.168.1.104";
+    /*settings.receivermode=ReceiverMode::Unicast;
+    settings.serverAddress="192.168.1.";
     settings.audio.source=AudioSource::None;
     settings.video.source=VideoSource::ScreenPipeWire;
     //settings.video.device="/dev/video2";
@@ -46,11 +46,11 @@ int main(int argc, char *argv[])
     settings.video.width  = 160;
     settings.video.height = 90;
     settings.previewMode=PreviewMode::MultiPreview;
-
+*/
     //settings.video.timeMode = TimeMode::FramePts;
 
-    ///if (!CommandLineParser::parse(app, settings))
-       /// return -1;
+    if (!CommandLineParser::parse(app, settings))
+        return -1;
 
 
     if(settings.receivermode==ReceiverMode::Unicast)
@@ -59,19 +59,6 @@ int main(int argc, char *argv[])
         RstpReceiverStream *rstp= new RstpReceiverStream;
         if (!rstp->open(settings)) return -1;
         rstp->start(settings.serverAddress);
-
-        RstpReceiverStream *rstp1= new RstpReceiverStream;
-        if (!rstp1->open(settings)) return -1;
-        rstp1->start(settings.serverAddress);
-        RstpReceiverStream *rstp2= new RstpReceiverStream;
-        if (!rstp2->open(settings)) return -1;
-        rstp2->start(settings.serverAddress);
-        RstpReceiverStream *rstp3= new RstpReceiverStream;
-        if (!rstp3->open(settings)) return -1;
-        rstp3->start(settings.serverAddress);
-        RstpReceiverStream *rstp4= new RstpReceiverStream;
-        if (!rstp4->open(settings)) return -1;
-        rstp4->start(settings.serverAddress);
     }
     if(settings.receivermode==ReceiverMode::Multicast)
     {
