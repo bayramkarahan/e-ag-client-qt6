@@ -35,8 +35,6 @@ int main(int argc, char *argv[])
     settings.audio.channels=2;
     settings.audio.frameSample=960;
     settings.audio.bitrate=20000;
-
-
     settings.audioAddress=settings.videoAddress;
     settings.audioPort=settings.videoPort+2;
     /*settings.video.screenIndex = 0;

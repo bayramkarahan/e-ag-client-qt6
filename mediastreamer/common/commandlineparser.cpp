@@ -85,11 +85,7 @@ bool CommandLineParser::parse(QApplication &app,
         "screen"
     });
 
-    parser.addOption({
-        "preview",
-        "none | local | remote",
-        "preview"
-    });
+
 
     parser.addOption({
         "address",
@@ -163,18 +159,7 @@ bool CommandLineParser::parse(QApplication &app,
         settings.audio.source = AudioSource::Both;
     else if (audiosource == "none"||audiosource == "")
         settings.audio.source = AudioSource::None;
-    //----------------------------------------------------
-    // Preview
-    //----------------------------------------------------
 
-    QString preview = parser.value("preview").toLower();
-
-    if (preview == "none")
-        settings.previewMode = PreviewMode::None;
-    else if (preview == "remote")
-        settings.previewMode = PreviewMode::Remote;
-    else if (preview == "local" || preview.isEmpty())
-        settings.previewMode = PreviewMode::Local;
 
     //----------------------------------------------------
     // Source
